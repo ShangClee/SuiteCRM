@@ -42,7 +42,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-class <module_name>ViewEdit extends ViewEdit{
+class SugarObjectsTemplateViewEdit extends ViewEdit
+{
 
     public function display()
     {
@@ -56,4 +57,8 @@ class <module_name>ViewEdit extends ViewEdit{
         }
         parent::display();
     }
+}
+
+if (!class_exists('<module_name>ViewEdit', false)) {
+    class_alias('SugarObjectsTemplateViewEdit', '<module_name>ViewEdit');
 }

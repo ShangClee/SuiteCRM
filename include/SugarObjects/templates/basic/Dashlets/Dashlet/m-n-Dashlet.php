@@ -45,7 +45,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/<module_name>/<object_name>.php');
 
-class <module_name>Dashlet extends DashletGeneric {
+class SugarObjectsTemplateDashlet extends DashletGeneric
+{
     function __construct($id, $def = null)
     {
         global $current_user, $app_strings;
@@ -60,6 +61,11 @@ class <module_name>Dashlet extends DashletGeneric {
         $this->searchFields = $dashletData['<module_name>Dashlet']['searchFields'];
         $this->columns = $dashletData['<module_name>Dashlet']['columns'];
 
-        $this->seedBean = new <object_name>();        
+        $beanClass = '<object_name>';
+        $this->seedBean = new $beanClass();
     }
+}
+
+if (!class_exists('<module_name>Dashlet', false)) {
+    class_alias('SugarObjectsTemplateDashlet', '<module_name>Dashlet');
 }
