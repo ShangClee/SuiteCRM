@@ -1,20 +1,23 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Tech stack: PHP (SuiteCRM 7.x), MySQL/MariaDB, Apache.
+  Conventions:
+  - Prefer minimal, targeted diffs and follow existing code patterns.
+  - Do not add inline code comments unless explicitly asked.
+  - Do not log secrets or credentials.
+  - Prefer dependency injection for testability; tests use PHPUnit + Mockery.
+  Verification:
+  - Use php -l for linting changed PHP files.
+  - Use php composer.phar for Composer commands (repo-local Composer).
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - Include Goals, Non-goals, Risks, and Verification.
+    - Call out any installation/migration impact explicitly.
+  design:
+    - Reference concrete file paths and key entry points.
+    - Prefer extending existing patterns over introducing new frameworks.
+  tasks:
+    - Break work into small, reviewable steps with clear outcomes.
+    - Include verification steps/commands for each major task group.

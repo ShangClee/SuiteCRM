@@ -28,6 +28,13 @@
 #[\AllowDynamicProperties]
 class AOD_LogicHooks
 {
+    private $service;
+
+    public function __construct()
+    {
+        $this->service = new \SuiteCRM\Custom\Service\AodIndexSyncService();
+    }
+
     /**
      * @deprecated since v7.12.0
      * @param SugarBean $bean
@@ -36,18 +43,7 @@ class AOD_LogicHooks
      */
     public function saveModuleChanges(SugarBean $bean, $event, $arguments)
     {
-        if ($bean->module_name == 'AOD_Index') {
-            return;
-        }
-        if (defined('sugarEntry') && defined('SUGARCRM_IS_INSTALLING')) {
-            return;
-        }
-        try {
-            $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->index($bean->module_name, $bean->id);
-        } catch (Exception $ex) {
-            $GLOBALS['log']->error($ex->getMessage());
-        }
+        $this->service->onSave($bean);
     }
 
     /**
@@ -58,18 +54,7 @@ class AOD_LogicHooks
      */
     public function saveModuleDelete(SugarBean $bean, $event, $arguments)
     {
-        if ($bean->module_name == 'AOD_Index') {
-            return;
-        }
-        if (defined('sugarEntry') && defined('SUGARCRM_IS_INSTALLING')) {
-            return;
-        }
-        try {
-            $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->remove($bean->module_name, $bean->id);
-        } catch (Exception $ex) {
-            $GLOBALS['log']->error($ex->getMessage());
-        }
+        $this->service->onDelete($bean);
     }
 
     /**
@@ -80,17 +65,6 @@ class AOD_LogicHooks
      */
     public function saveModuleRestore(SugarBean $bean, $event, $arguments)
     {
-        if ($bean->module_name == 'AOD_Index') {
-            return;
-        }
-        if (defined('sugarEntry') && defined('SUGARCRM_IS_INSTALLING')) {
-            return;
-        }
-        try {
-            $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->index($bean->module_name, $bean->id);
-        } catch (Exception $ex) {
-            $GLOBALS['log']->error($ex->getMessage());
-        }
+        $this->service->onRestore($bean);
     }
 }

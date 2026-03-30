@@ -4,13 +4,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+use SuiteCRM\Custom\Service\JjwgMapsGeocodeService;
+
 #[\AllowDynamicProperties]
 class LeadsJjwg_MapsLogicHook
 {
-    public $jjwg_Maps;
+    private $service;
     public function __construct()
     {
-        $this->jjwg_Maps = get_module_info('jjwg_Maps');
+        $this->service = new JjwgMapsGeocodeService();
     }
 
 
@@ -19,16 +21,12 @@ class LeadsJjwg_MapsLogicHook
     public function updateGeocodeInfo(&$bean, $event, $arguments)
     {
         // before_save
-        if ($this->jjwg_Maps->settings['logic_hooks_enabled']) {
-            $this->jjwg_Maps->updateGeocodeInfo($bean);
-        }
+        $this->service->updateGeocodeInfo($bean);
     }
 
     public function updateRelatedMeetingsGeocodeInfo(&$bean, $event, $arguments)
     {
         // after_save
-        if ($this->jjwg_Maps->settings['logic_hooks_enabled']) {
-            $this->jjwg_Maps->updateRelatedMeetingsGeocodeInfo($bean);
-        }
+        $this->service->updateRelatedMeetingsGeocodeInfo($bean);
     }
 }

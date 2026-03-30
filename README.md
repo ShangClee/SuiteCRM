@@ -27,6 +27,15 @@ SuiteCRM 7 is a mature and stable CRM with a large community and regular release
 
 You may also be interested in [SuiteCRM 8](https://github.com/SuiteCRM/SuiteCRM-Core) the latest version of SuiteCRM. At the time of writing, SuiteCRM 8 is in the levelling up phase and not yet as feature complete. More information is available on the [SuiteCRM Journey ](https://suitecrm.com/the-suitecrm-8-journey/).
 
+### OpenSpec (Trae)
+
+This repo is configured to use OpenSpec (spec-driven workflow) in Trae. See [openspec/README.md](./openspec/README.md).
+
+Development patterns:
+- [Thin Hook / Fat Service](./docs/patterns/thin-hook-fat-service.md)
+- Refactor notes:
+  - [Thin Hook / Fat Service refactor](./docs/refactors/thin-hook-fat-service.md)
+
 ### Getting Started
 
 SuiteCRM 7 is compatible with most Linux and Windows servers. Test and development servers can be deployed locally, however for best performance and compatibility we recommend hosting on a linux based server with a properly configured LAMP Stack. As SuiteCRM is based on standard technologies like Apache, PHP and MySQL, the CRM can be self-hosted on your own internal network, on a public cloud provider or on a fully managed hosting service.
@@ -90,7 +99,4 @@ By utilising these services you are also contributing to the future development 
 ### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./LICENSE.txt)
 
 SuiteCRM is published under the AGPLv3 license.
-
-
-
 
