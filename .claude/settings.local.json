@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(openspec list:*)",
-      "Bash(openspec status:*)"
+      "Bash(openspec status:*)",
+      "Bash(grep -r \"jjwg_maps_address_c\\\\|jjwg_maps_lat_c\\\\|jjwg_maps_lng_c\\\\|jjwg_maps_geocode_status_c\" /Users/shang/Prj2026/SuiteCRM/modules/Project* /Users/shang/Prj2026/SuiteCRM/modules/Opportunities* /Users/shang/Prj2026/SuiteCRM/modules/Cases* --include=*.php)",
+      "Bash(find /Users/shang/Prj2026/SuiteCRM -name \"*.php\" -exec grep -l \"get_linked_beans\\\\|accounts_project\\\\|accounts_opportunity\\\\|accounts_case\" {})"
     ]
   }
 }
