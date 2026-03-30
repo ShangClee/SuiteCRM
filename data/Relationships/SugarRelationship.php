@@ -221,6 +221,38 @@ abstract class SugarRelationship
         return isset($this->def['fields']) ? $this->def['fields'] : array();
     }
 
+    public function getJoinKeyLHS(): ?string
+    {
+        return $this->def['join_key_lhs'] ?? null;
+    }
+
+    public function getJoinKeyRHS(): ?string
+    {
+        return $this->def['join_key_rhs'] ?? null;
+    }
+
+    public function getRelationshipRoleColumn(): ?string
+    {
+        return $this->def['relationship_role_column'] ?? null;
+    }
+
+    public function getRelationshipRoleColumnValue(): ?string
+    {
+        return $this->def['relationship_role_column_value'] ?? null;
+    }
+
+    public function getRoleWhereClause(string $table = ''): string
+    {
+        return $this->getRoleWhere($table);
+    }
+
+    public function isSelfReferencingRelationship(): bool
+    {
+        $lhs = $this->def['lhs_module'] ?? null;
+        $rhs = $this->def['rhs_module'] ?? null;
+        return !empty($lhs) && $lhs === $rhs;
+    }
+
     /**
      * @param array $row values to be inserted into the relationship
      *

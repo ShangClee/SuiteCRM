@@ -262,95 +262,58 @@ class FP_eventsController extends SugarController
         $eventIDQuoted = $_POST['return_id'];
         $type = $_POST['pop_up_type'];
 
-
         if (!is_array($ids)) {
             $ids = array($ids);
         }
+        $bulk = new \SuiteCRM\Utility\BulkOperations();
+        $event = BeanFactory::newBean('FP_events');
+        $event->retrieve($eventIDQuoted);
         //Target lists. Can incliude contacts, leads and targets as part of the target list
         if ($type == 'target_list') {
-            foreach ($ids as $list) {
-                $event = BeanFactory::newBean('FP_events');
-                $event->retrieve($eventIDQuoted);
-                $event->load_relationship('fp_events_prospects_1');
-                $event->load_relationship('fp_events_contacts');
-                $event->load_relationship('fp_events_leads_1');
+            $event->load_relationship('fp_events_prospects_1');
+            $event->load_relationship('fp_events_contacts');
+            $event->load_relationship('fp_events_leads_1');
 
+            $prospectIds = [];
+            $contactIds = [];
+            $leadIds = [];
+
+            foreach ($ids as $list) {
                 $target_list = BeanFactory::newBean('ProspectLists');
                 $target_list->retrieve($list);
                 $target_list->load_relationship('prospects');
                 $target_list->load_relationship('contacts');
                 $target_list->load_relationship('leads');
 
-                //add prospects/targets
-                foreach ($target_list->prospects->getBeans() as $contact) {
-                    $contact_id_list = $event->fp_events_prospects_1->get();
-
-                    if (!in_array($contact->id, $contact_id_list)) { //check if its already related
-
-                        $event->fp_events_prospects_1->add($contact->id);
-                    }
+                foreach ($target_list->prospects->get() as $id) {
+                    $prospectIds[$id] = true;
                 }
-                //add contacts
-                foreach ($target_list->contacts->getBeans() as $contact) {
-                    $contact_id_list = $event->fp_events_contacts->get();
-
-                    if (!in_array($contact->id, $contact_id_list)) {
-                        $event->fp_events_contacts->add($contact->id);
-                    }
+                foreach ($target_list->contacts->get() as $id) {
+                    $contactIds[$id] = true;
                 }
-                //add leads
-                foreach ($target_list->leads->getBeans() as $contact) {
-                    $contact_id_list = $event->fp_events_leads_1->get();
-
-                    if (!in_array($contact->id, $contact_id_list)) {
-                        $event->fp_events_leads_1->add($contact->id);
-                    }
+                foreach ($target_list->leads->get() as $id) {
+                    $leadIds[$id] = true;
                 }
             }
+
+            $bulk->bulkAddRelatedIds($event->fp_events_prospects_1, array_keys($prospectIds));
+            $bulk->bulkAddRelatedIds($event->fp_events_contacts, array_keys($contactIds));
+            $bulk->bulkAddRelatedIds($event->fp_events_leads_1, array_keys($leadIds));
         }
         //Targets
         elseif ($type == 'targets') {
-            foreach ($ids as $target) {
-                $event = BeanFactory::newBean('FP_events');
-                $event->retrieve($eventIDQuoted);
-                $event->load_relationship('fp_events_prospects_1');
-
-                $contact_id_list = $event->fp_events_prospects_1->get();//get array of currently linked targets
-
-                if (!in_array($target, $contact_id_list)) { //check if its already in the array
-
-                    $event->fp_events_prospects_1->add($target);//if not add relationship
-                }
-            }
+            $event->load_relationship('fp_events_prospects_1');
+            $bulk->bulkAddRelatedIds($event->fp_events_prospects_1, $ids);
         }
         //leads
         elseif ($type == 'leads') {
-            foreach ($ids as $lead) {
-                $event = BeanFactory::newBean('FP_events');
-                $event->retrieve($eventIDQuoted);
-                $event->load_relationship('fp_events_leads_1');
-
-                $contact_id_list = $event->fp_events_leads_1->get();//get array of currently linked leads
-
-                if (!in_array($lead, $contact_id_list)) { //check if its already in the array
-
-                    $event->fp_events_leads_1->add($lead);//if not add relationship
-                }
-            }
+            $event->load_relationship('fp_events_leads_1');
+            $bulk->bulkAddRelatedIds($event->fp_events_leads_1, $ids);
         }
         //contacts
         elseif ($type == 'contacts') {
-            foreach ($ids as $contact) {
-                $event = BeanFactory::newBean('FP_events');
-                $event->retrieve($eventIDQuoted);
-                $event->load_relationship('fp_events_contacts');
-
-                $contact_id_list = $event->fp_events_contacts->get(); //get array of currently linked contacts
-
-                if (!in_array($contact, $contact_id_list)) {
-                    $event->fp_events_contacts->add($contact);
-                }
-            }
+            $event->load_relationship('fp_events_contacts');
+            $bulk->bulkAddRelatedIds($event->fp_events_contacts, $ids);
         }
 
         die();

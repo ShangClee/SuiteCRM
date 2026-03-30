@@ -118,6 +118,23 @@ class Popup_Picker
             }
         }
 
+        // Pre-fetch related Contacts for Meetings, Calls, and Emails to avoid N+1 queries
+        $bulk = new \SuiteCRM\Utility\BulkOperations();
+        $allMeetingContacts = $bulk->bulkGetRelatedIds($focus_meetings_list, 'contacts');
+        $allCallContacts = $bulk->bulkGetRelatedIds($focus_calls_list, 'contacts');
+        $allEmailContacts = $bulk->bulkGetRelatedIds($focus_emails_list, 'contacts');
+        
+        $allContactIds = array_unique(array_merge(
+            array_merge(...array_values($allMeetingContacts) ?: [[]]),
+            array_merge(...array_values($allCallContacts) ?: [[]]),
+            array_merge(...array_values($allEmailContacts) ?: [[]])
+        ));
+        
+        $fetchedContacts = [];
+        if (!empty($allContactIds)) {
+            $fetchedContacts = $bulk->bulkRead('Contacts', $allContactIds);
+        }
+
         foreach ($focus_tasks_list as $task) {
             if (!$task->ACLAccess('list')) {
                 continue;
@@ -179,10 +196,12 @@ class Popup_Picker
             }
 
             if (empty($meeting->contact_id) && empty($meeting->contact_name)) {
-                $meeting_contacts = $meeting->get_linked_beans('contacts', 'Contact');
-                if (!empty($meeting_contacts[0]->id) && !empty($meeting_contacts[0]->name)) {
-                    $meeting->contact_id = $meeting_contacts[0]->id;
-                    $meeting->contact_name = $meeting_contacts[0]->name;
+                if (!empty($allMeetingContacts[$meeting->id])) {
+                    $firstContactId = $allMeetingContacts[$meeting->id][0];
+                    if (isset($fetchedContacts[$firstContactId])) {
+                        $meeting->contact_id = $firstContactId;
+                        $meeting->contact_name = $fetchedContacts[$firstContactId]->name;
+                    }
                 }
             }
             if ($meeting->status !== 'Planned') {
@@ -231,10 +250,12 @@ class Popup_Picker
             }
 
             if (empty($call->contact_id) && empty($call->contact_name)) {
-                $call_contacts = $call->get_linked_beans('contacts', 'Contact');
-                if (!empty($call_contacts[0]->id) && !empty($call_contacts[0]->name)) {
-                    $call->contact_id = $call_contacts[0]->id;
-                    $call->contact_name = $call_contacts[0]->name;
+                if (!empty($allCallContacts[$call->id])) {
+                    $firstContactId = $allCallContacts[$call->id][0];
+                    if (isset($fetchedContacts[$firstContactId])) {
+                        $call->contact_id = $firstContactId;
+                        $call->contact_name = $fetchedContacts[$firstContactId]->name;
+                    }
                 }
             }
 
@@ -282,10 +303,12 @@ class Popup_Picker
                 continue;
             }
             if (empty($email->contact_id) && empty($email->contact_name)) {
-                $email_contacts = $email->get_linked_beans('contacts', 'Contact');
-                if (!empty($email_contacts[0]->id) && !empty($email_contacts[0]->name)) {
-                    $email->contact_id = $email_contacts[0]->id;
-                    $email->contact_name = $email_contacts[0]->name;
+                if (!empty($allEmailContacts[$email->id])) {
+                    $firstContactId = $allEmailContacts[$email->id][0];
+                    if (isset($fetchedContacts[$firstContactId])) {
+                        $email->contact_id = $firstContactId;
+                        $email->contact_name = $fetchedContacts[$firstContactId]->name;
+                    }
                 }
             }
             $ts = '';

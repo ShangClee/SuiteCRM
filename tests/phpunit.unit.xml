@@ -5,7 +5,7 @@
         backupGlobals="false"
         backupStaticProperties="false"
         beStrictAboutOutputDuringTests="false"
-        bootstrap="../vendor/autoload.php">
+        bootstrap="unit/pure/bootstrap.php">
 
     <testsuites>
         <testsuite name="PureUnitTests">

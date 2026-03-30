@@ -634,6 +634,13 @@ class ViewConvertLead extends SugarView
             $accountParentInfo = array('id'=>$account_id,'type'=>'Accounts');
         }
 
+        // Pre-fetch related Users for all activities to avoid N+1 queries during copy
+        $bulk = new \SuiteCRM\Utility\BulkOperations();
+        $allActivityUsers = [];
+        if (!empty($activities) && (!isset($sugar_config['lead_conv_activity_opt']) || $sugar_config['lead_conv_activity_opt'] == 'copy')) {
+            $allActivityUsers = $bulk->bulkGetRelatedIds($activities, 'users');
+        }
+
         foreach ($beans as $module => $bean) {
             if (isset($parent_types[$module])) {
                 if (empty($bean->id)) {
@@ -648,7 +655,7 @@ class ViewConvertLead extends SugarView
                                 if (is_array($_POST['lead_conv_ac_op_sel'])) {
                                     foreach ($_POST['lead_conv_ac_op_sel'] as $mod) {
                                         if ($mod == $module) {
-                                            $this->copyActivityAndRelateToBean($activity, $bean, $accountParentInfo);
+                                            $this->copyActivityAndRelateToBean($activity, $bean, $accountParentInfo, $allActivityUsers);
                                             break;
                                         }
                                     }
@@ -748,7 +755,8 @@ class ViewConvertLead extends SugarView
     protected function copyActivityAndRelateToBean(
         $activity,
         $bean,
-        $parentArr = array()
+        $parentArr = array(),
+        $allActivityUsers = array()
         ) {
         global $beanList;
 
@@ -788,7 +796,14 @@ class ViewConvertLead extends SugarView
             }
 
             //check users connected to bean
-            if ($activity->load_relationship("users")) {
+            if (!empty($allActivityUsers) && isset($allActivityUsers[$activity->id])) {
+                $userList = $allActivityUsers[$activity->id];
+                if ((is_countable($userList) ? count($userList) : 0) > 0 && $newActivity->load_relationship("users")) {
+                    foreach ($userList as $userId) {
+                        $newActivity->users->add($userId);
+                    }
+                }
+            } elseif ($activity->load_relationship("users")) {
                 $userList = $activity->users->getBeans();
                 if ((is_countable($userList) ? count($userList) : 0) > 0 && $newActivity->load_relationship("users")) {
                     foreach ($userList as $user) {
