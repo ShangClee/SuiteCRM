@@ -199,7 +199,7 @@ function installJJWHooks()
             'class'          => 'ProjectJjwg_MapsLogicHook',
             'function'       => 'deleteRelationship',
         ),
-        // Accounts (7 hooks)
+        // Accounts (3 hooks)
         array(
             'module'         => 'Accounts',
             'hook'           => 'before_save',
@@ -208,42 +208,6 @@ function installJJWHooks()
             'file'           => 'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
             'class'          => 'AccountsJjwg_MapsLogicHook',
             'function'       => 'updateGeocodeInfo',
-        ),
-        array(
-            'module'         => 'Accounts',
-            'hook'           => 'after_save',
-            'order'          => 77,
-            'description'    => 'updateRelatedMeetingsGeocodeInfo',
-            'file'           => 'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-            'class'          => 'AccountsJjwg_MapsLogicHook',
-            'function'       => 'updateRelatedMeetingsGeocodeInfo',
-        ),
-        array(
-            'module'         => 'Accounts',
-            'hook'           => 'after_save',
-            'order'          => 78,
-            'description'    => 'updateRelatedProjectGeocodeInfo',
-            'file'           => 'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-            'class'          => 'AccountsJjwg_MapsLogicHook',
-            'function'       => 'updateRelatedProjectGeocodeInfo',
-        ),
-        array(
-            'module'         => 'Accounts',
-            'hook'           => 'after_save',
-            'order'          => 79,
-            'description'    => 'updateRelatedOpportunitiesGeocodeInfo',
-            'file'           => 'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-            'class'          => 'AccountsJjwg_MapsLogicHook',
-            'function'       => 'updateRelatedOpportunitiesGeocodeInfo',
-        ),
-        array(
-            'module'         => 'Accounts',
-            'hook'           => 'after_save',
-            'order'          => 80,
-            'description'    => 'updateRelatedCasesGeocodeInfo',
-            'file'           => 'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-            'class'          => 'AccountsJjwg_MapsLogicHook',
-            'function'       => 'updateRelatedCasesGeocodeInfo',
         ),
         array(
             'module'         => 'Accounts',

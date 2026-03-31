@@ -128,37 +128,6 @@ class LogicHookTest extends SuitePHPUnitFrameworkTestCase
                         'updateGeocodeInfo',
                     ),
                 ),
-            'after_save' =>
-                array(
-                    array(
-                        77,
-                        'updateRelatedMeetingsGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedMeetingsGeocodeInfo',
-                    ),
-                    array(
-                        78,
-                        'updateRelatedProjectGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedProjectGeocodeInfo',
-                    ),
-                    array(
-                        79,
-                        'updateRelatedOpportunitiesGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedOpportunitiesGeocodeInfo',
-                    ),
-                    array(
-                        80,
-                        'updateRelatedCasesGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedCasesGeocodeInfo',
-                    ),
-                ),
             'after_relationship_add' =>
                 array(
                     array(
@@ -218,36 +187,6 @@ class LogicHookTest extends SuitePHPUnitFrameworkTestCase
                     'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
                     'AccountsJjwg_MapsLogicHook',
                     'updateGeocodeInfo'
-                ),
-            ),
-            'after_save' => array(
-                array(
-                    77,
-                    'updateRelatedMeetingsGeocodeInfo',
-                    'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                    'AccountsJjwg_MapsLogicHook',
-                    'updateRelatedMeetingsGeocodeInfo'
-                ),
-                array(
-                    78,
-                    'updateRelatedProjectGeocodeInfo',
-                    'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                    'AccountsJjwg_MapsLogicHook',
-                    'updateRelatedProjectGeocodeInfo'
-                ),
-                array(
-                    79,
-                    'updateRelatedOpportunitiesGeocodeInfo',
-                    'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                    'AccountsJjwg_MapsLogicHook',
-                    'updateRelatedOpportunitiesGeocodeInfo'
-                ),
-                array(
-                    80,
-                    'updateRelatedCasesGeocodeInfo',
-                    'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                    'AccountsJjwg_MapsLogicHook',
-                    'updateRelatedCasesGeocodeInfo'
                 ),
             ),
             'after_relationship_add' => array(
@@ -350,37 +289,6 @@ class LogicHookTest extends SuitePHPUnitFrameworkTestCase
                         'updateGeocodeInfo',
                     ),
                 ),
-            'after_save' =>
-                array(
-                    array(
-                        77,
-                        'updateRelatedMeetingsGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedMeetingsGeocodeInfo',
-                    ),
-                    array(
-                        78,
-                        'updateRelatedProjectGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedProjectGeocodeInfo',
-                    ),
-                    array(
-                        79,
-                        'updateRelatedOpportunitiesGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedOpportunitiesGeocodeInfo',
-                    ),
-                    array(
-                        80,
-                        'updateRelatedCasesGeocodeInfo',
-                        'modules/Accounts/AccountsJjwg_MapsLogicHook.php',
-                        'AccountsJjwg_MapsLogicHook',
-                        'updateRelatedCasesGeocodeInfo',
-                    ),
-                ),
             'after_relationship_add' =>
                 array(
                     array(
@@ -452,13 +360,6 @@ class LogicHookTest extends SuitePHPUnitFrameworkTestCase
                 'before_save' =>
                 array (
                         array (77, 'updateGeocodeInfo', 'modules/Accounts/AccountsJjwg_MapsLogicHook.php', 'AccountsJjwg_MapsLogicHook', 'updateGeocodeInfo',),
-                ),
-                'after_save' =>
-                array (
-                        array (77, 'updateRelatedMeetingsGeocodeInfo', 'modules/Accounts/AccountsJjwg_MapsLogicHook.php', 'AccountsJjwg_MapsLogicHook', 'updateRelatedMeetingsGeocodeInfo',),
-                        array (78, 'updateRelatedProjectGeocodeInfo', 'modules/Accounts/AccountsJjwg_MapsLogicHook.php', 'AccountsJjwg_MapsLogicHook', 'updateRelatedProjectGeocodeInfo', ),
-                        array (79, 'updateRelatedOpportunitiesGeocodeInfo', 'modules/Accounts/AccountsJjwg_MapsLogicHook.php', 'AccountsJjwg_MapsLogicHook', 'updateRelatedOpportunitiesGeocodeInfo',),
-                        array (80, 'updateRelatedCasesGeocodeInfo', 'modules/Accounts/AccountsJjwg_MapsLogicHook.php', 'AccountsJjwg_MapsLogicHook', 'updateRelatedCasesGeocodeInfo',),
                 ),
                 'after_relationship_add' =>
                 array (

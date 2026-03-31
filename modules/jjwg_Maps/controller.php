@@ -848,13 +848,38 @@ class jjwg_MapsController extends SugarController
                     $mod_strings_display = array_merge($mod_strings_display, $GLOBALS['mod_strings']);
 
                     // Find the Items to Display
-                    // Assume there is no address at 0,0; it's in the Atlantic Ocean!
-                    $where_conds = "(" . $this->display_object->table_name . "_cstm.jjwg_maps_lat_c != 0 OR " .
-                            "" . $this->display_object->table_name . "_cstm.jjwg_maps_lng_c != 0) " .
-                            " AND " .
-                            "(" . $this->display_object->table_name . "_cstm.jjwg_maps_geocode_status_c = 'OK')";
-                    $query = $this->display_object->create_new_list_query('', $where_conds, array(), array(), 0, '', false, $this->display_object, false);
-                    if ($display_module == 'Contacts') { // Contacts - Account Name
+            // Assume there is no address at 0,0; it's in the Atlantic Ocean!
+            
+            $params = array();
+            
+            if (in_array($display_module, ['Cases', 'Opportunities', 'Project'])) {
+                // Determine the relationship table and keys based on the module
+                if ($display_module == 'Cases') {
+                    $rel_table = 'accounts_cases';
+                    $rel_key = 'case_id';
+                } elseif ($display_module == 'Opportunities') {
+                    $rel_table = 'accounts_opportunities';
+                    $rel_key = 'opportunity_id';
+                } elseif ($display_module == 'Project') {
+                    $rel_table = 'projects_accounts';
+                    $rel_key = 'project_id';
+                }
+                
+                $params['custom_select'] = ", accounts_cstm.jjwg_maps_lat_c, accounts_cstm.jjwg_maps_lng_c, accounts_cstm.jjwg_maps_address_c ";
+                $params['custom_from'] = " LEFT JOIN {$rel_table} ON {$this->display_object->table_name}.id = {$rel_table}.{$rel_key} AND {$rel_table}.deleted = 0 " .
+                                         " LEFT JOIN accounts ON accounts.id = {$rel_table}.account_id AND accounts.deleted = 0 " .
+                                         " LEFT JOIN accounts_cstm ON accounts.id = accounts_cstm.id_c ";
+                
+                $where_conds = "(accounts_cstm.jjwg_maps_lat_c != 0 OR accounts_cstm.jjwg_maps_lng_c != 0) AND accounts_cstm.jjwg_maps_geocode_status_c = 'OK'";
+            } else {
+                $where_conds = "(" . $this->display_object->table_name . "_cstm.jjwg_maps_lat_c != 0 OR " .
+                        "" . $this->display_object->table_name . "_cstm.jjwg_maps_lng_c != 0) " .
+                        " AND " .
+                        "(" . $this->display_object->table_name . "_cstm.jjwg_maps_geocode_status_c = 'OK')";
+            }
+            
+            $query = $this->display_object->create_new_list_query('', $where_conds, array(), $params, 0, '', false, $this->display_object, false);
+            if ($display_module == 'Contacts') { // Contacts - Account Name
                         $query = str_replace(' FROM contacts ', ' ,accounts.name AS account_name, accounts.id AS account_id  FROM contacts  ', (string) $query);
                         $query = str_replace(' FROM contacts ', ' FROM contacts LEFT JOIN accounts_contacts ON contacts.id=accounts_contacts.contact_id and accounts_contacts.deleted = 0 LEFT JOIN accounts ON accounts_contacts.account_id=accounts.id AND accounts.deleted=0 ', $query);
                     }
@@ -942,11 +967,37 @@ class jjwg_MapsController extends SugarController
 
             // Find the Items to Display
             // Assume there is no address at 0,0; it's in the Atlantic Ocean!
-            $where_conds = "(" . $this->display_object->table_name . "_cstm.jjwg_maps_lat_c != 0 OR " .
-                    "" . $this->display_object->table_name . "_cstm.jjwg_maps_lng_c != 0) " .
-                    " AND " .
-                    "(" . $this->display_object->table_name . "_cstm.jjwg_maps_geocode_status_c = 'OK')";
-            $query = $this->display_object->create_new_list_query('', $where_conds, array(), array(), 0, '', false, $this->display_object, false);
+            
+            $params = array();
+            
+            if (in_array($display_module, ['Cases', 'Opportunities', 'Project'])) {
+                // Determine the relationship table and keys based on the module
+                if ($display_module == 'Cases') {
+                    $rel_table = 'accounts_cases';
+                    $rel_key = 'case_id';
+                } elseif ($display_module == 'Opportunities') {
+                    $rel_table = 'accounts_opportunities';
+                    $rel_key = 'opportunity_id';
+                } elseif ($display_module == 'Project') {
+                    $rel_table = 'projects_accounts';
+                    $rel_key = 'project_id';
+                }
+                
+                $params['custom_select'] = ", accounts_cstm.jjwg_maps_lat_c, accounts_cstm.jjwg_maps_lng_c, accounts_cstm.jjwg_maps_address_c ";
+                $params['custom_from'] = " LEFT JOIN {$rel_table} ON {$this->display_object->table_name}.id = {$rel_table}.{$rel_key} AND {$rel_table}.deleted = 0 " .
+                                         " LEFT JOIN accounts ON accounts.id = {$rel_table}.account_id AND accounts.deleted = 0 " .
+                                         " LEFT JOIN accounts_cstm ON accounts.id = accounts_cstm.id_c ";
+                
+                $where_conds = "(accounts_cstm.jjwg_maps_lat_c != 0 OR accounts_cstm.jjwg_maps_lng_c != 0) AND accounts_cstm.jjwg_maps_geocode_status_c = 'OK'";
+            } else {
+                $where_conds = "(" . $this->display_object->table_name . "_cstm.jjwg_maps_lat_c != 0 OR " .
+                        "" . $this->display_object->table_name . "_cstm.jjwg_maps_lng_c != 0) " .
+                        " AND " .
+                        "(" . $this->display_object->table_name . "_cstm.jjwg_maps_geocode_status_c = 'OK')";
+            }
+            
+            $query = $this->display_object->create_new_list_query('', $where_conds, array(), $params, 0, '', false, $this->display_object, false);
+            
             if ($display_module == 'Contacts') { // Contacts - Account Name
                 $query = str_replace(' FROM contacts ', ' ,accounts.name AS account_name, accounts.id AS account_id  FROM contacts  ', (string) $query);
                 $query = str_replace(' FROM contacts ', ' FROM contacts LEFT JOIN accounts_contacts ON contacts.id=accounts_contacts.contact_id and accounts_contacts.deleted = 0 LEFT JOIN accounts ON accounts_contacts.account_id=accounts.id AND accounts.deleted=0 ', $query);

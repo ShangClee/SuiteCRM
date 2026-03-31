@@ -103,9 +103,20 @@ A few threads worth pulling on before deciding anything:
 What's the most interesting thread to you — the stored procedure/trigger path, the bulk SQL\
 optimization, or the lazy-lookup architectural rethink?
 
-<br />
 
 ***
 
 1. Update initial Database when install  - better to make the sql query form file. 
 
+Your recent work is moving logic down from hooks → services → bulk SQL. This architecture
+  continues that:                                                                                
+                                                        
+  hooks (scattered)                                                                              
+    ↓ [done ✓]                                          
+  fat services (consolidated PHP)                                                                
+    ↓ [done ✓]
+  bulk SQL called from services                                                                  
+    ↓ [proposed next step]                              
+  SQL views/CTEs in SQLite (logic IN the DB)                                                     
+    + GraphQL resolvers for mutations                                                            
+    + AI agents hit GraphQL directly       

@@ -7,7 +7,10 @@
       "Bash(find /Users/shang/Prj2026/SuiteCRM -name \"*.php\" -exec grep -l \"get_linked_beans\\\\|accounts_project\\\\|accounts_opportunity\\\\|accounts_case\" {})",
       "Bash(git -C /Users/shang/Prj2026/SuiteCRM log --oneline --all)",
       "Bash(git -C /Users/shang/Prj2026/SuiteCRM log --oneline --author=\"Shang\\\\|Claude\")",
-      "Bash(git -C /Users/shang/Prj2026/SuiteCRM log --oneline --all --grep=\"bulk\\\\|N+1\\\\|eliminate\")"
+      "Bash(git -C /Users/shang/Prj2026/SuiteCRM log --oneline --all --grep=\"bulk\\\\|N+1\\\\|eliminate\")",
+      "Bash(cat openspec/changes/*/proposal.md)",
+      "Bash(find /Users/shang/Prj2026/SuiteCRM/lib/Utility -name *.php)",
+      "Bash(find /Users/shang/Prj2026/SuiteCRM/openspec -name *.yaml)"
     ]
   }
 }
